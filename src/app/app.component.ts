@@ -1,17 +1,21 @@
 import { Component } from '@angular/core';
 import { Hero } from './hero';
+import { HeroService } from './hero.service';
+import { OnInit } from '@angular/core';
 
-const HEROSE: Hero[] = [
-{id:11,name:'test'},
-{ id: 12, name: 'test1' },
-{ id: 13, name: 'test2' },
-{ id: 14, name: 'test3' },
-{ id: 15, name: 'test4' },
-{ id: 16, name: 'test5' },
-{ id: 17, name: 'test6' },
-{ id: 18, name: 'test7' }]
+// const HEROSE: Hero[] = [
+// {id:11,name:'test'},
+// { id: 12, name: 'test1' },
+// { id: 13, name: 'test2' },
+// { id: 14, name: 'test3' },
+// { id: 15, name: 'test4' },
+// { id: 16, name: 'test5' },
+// { id: 17, name: 'test6' },
+// { id: 18, name: 'test7' }]
+
 
 @Component({
+  providers: [HeroService],
   selector: 'my-app',
   template: `<h2>My Hero</h2>
   <ul class="heroes">
@@ -75,18 +79,27 @@ const HEROSE: Hero[] = [
 
 })
 
-export class AppComponent  { 
+export class AppComponent implements OnInit { 
 	title = 'tour of heroes';
 	// hero: Hero = {
 	// 	id: 1,
 	// 	name: "Felix"
 	// }
-	heroes = HEROSE;
+	// heroes = HEROSE;
+	heroes: Hero[];
 	selectedHero: Hero;
 	onSelect(hero: Hero): void {
 		this.selectedHero = hero;
 	}
+	constructor(private heroService: HeroService) { }
+	getHeroes(): void {
+		this.heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
+	}
+	ngOnInit(): void {
+		this.getHeroes();
+	}
 }
+
 
 
 
